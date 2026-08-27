@@ -6,13 +6,13 @@
 
 ```mermaid
 flowchart TD
-    S[SEED<br/>rotação determinística] --> C[CONCEPT<br/>1 mecânica · paleta fixa · nome esquisito]
-    C --> D[DESIGN<br/>GDD comprimido + plano de juice]
-    D --> K[CODE<br/>template JV · Canvas 2D · SFX sintetizado]
-    K --> G{STATIC GATE<br/>sintaxe · contrato · anti-slop}
-    G -- reprova -->|≤ 3 iterações| K
-    G -- aprova --> P[PUBLISH<br/>games/&lt;slug&gt;/ + gh-pages]
-    P --> E[EVOLVE<br/>cron reabre o jogo p/ v2]
+    S["SEED<br/>rotação determinística"] --> C["CONCEPT<br/>1 mecânica · paleta fixa · nome esquisito"]
+    C --> D["DESIGN<br/>GDD comprimido + plano de juice"]
+    D --> K["CODE<br/>template JV · Canvas 2D · SFX sintetizado"]
+    K --> G{"STATIC GATE<br/>sintaxe · contrato · anti-slop"}
+    G -- "reprova (max 3 iterações)" --> K
+    G -- "aprova" --> P["PUBLISH<br/>games/slug + gh-pages"]
+    P --> E["EVOLVE<br/>cron reabre o jogo p/ v2"]
     E --> K
 ```
 
