@@ -1,0 +1,11 @@
+{
+  "runs": [
+    {
+      "date": "2026-08-27T04:37:15+00:00",
+      "seed_id": "refletor",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
+    }
+  ]
+}

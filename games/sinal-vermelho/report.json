@@ -1,0 +1,44 @@
+{
+  "date": "2026-08-27T04:37:15+00:00",
+  "mock": true,
+  "seed": {
+    "id": "refletor",
+    "genre": "puzzle",
+    "mechanic": "espelhar lasers para acertar núcleos",
+    "theme": "templo abandonado",
+    "twist": "um espelho só reflete ao som do pulso"
+  },
+  "spec": {
+    "name": "sinal-vermelho",
+    "tagline": "pise, pare, respire. repita.",
+    "genre": "arcade",
+    "mechanic": "desviar de blocos que caem e rebater dardos",
+    "controls": "setas/WASD + espaço",
+    "palette": {
+      "name": "noturno-4",
+      "colors": [
+        "#f4f1de",
+        "#e07a5f",
+        "#3d405b",
+        "#81b29a",
+        "#0b0b0e"
+      ]
+    },
+    "juice": [
+      "screenshake ao morrer",
+      "partículas ao estourar bloco",
+      "som em cada dardo"
+    ],
+    "first_minute": "blocos caem lento, ritmo dobra aos 30s",
+    "anti_slop": [
+      "nome minúsculo e específico",
+      "paleta nomeada de 5 cores"
+    ]
+  },
+  "gate": {
+    "passed": true,
+    "errors": [],
+    "warnings": []
+  },
+  "iterations": 1
+}

@@ -1,0 +1,46 @@
+name: fabricar
+# Cria um jogo novo (e comite na pasta games/) via cron ou botão.
+# Sem segredo de LLM configurado, roda em modo --mock (demonstração).
+on:
+  workflow_dispatch:
+    inputs:
+      seed-idx:
+        description: "Índice da seed (vazio = rotação automática)"
+        required: false
+  schedule:
+    # 11:07 UTC = 08:07 em Brasília; fora do off-peak caro da DeepSeek
+    - cron: "7 11 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  jogo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install -e .
+      - name: fabricar jogo
+        env:
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+        run: |
+          if [ -z "$LLM_API_KEY" ]; then
+            python -m fabrica.cli run --mock --out games
+          else
+            python -m fabrica.cli run --out games
+          fi
+      - name: commit do jogo novo
+        run: |
+          git config user.name "jogos-vivos[bot]"
+          git config user.email "bot@jogosvivos.local"
+          git add games/ state/
+          git commit -m "jogo novo: $(ls games | tail -1)" || echo "nada a comitar"
+          git push

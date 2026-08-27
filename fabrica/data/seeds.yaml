@@ -1,0 +1,182 @@
+# Fonte de seeds — gênero × mecânica × tema (rotação determinística)
+
+- id: sprint-noite
+  genre: arcade
+  mechanic: desviar de ondas de obstáculos que aceleram
+  theme: madrugada de cidade
+  twist: a cada 15s a câmera gira 90 graus
+- id: torre-inversa
+  genre: puzzle
+  mechanic: empilhar blocos com física mole
+  theme: pântano fosforescente
+  twist: o peso do bloco depende da cor
+- id: eco-caverna
+  genre: exploração
+  mechanic: enxergar só pelo rastro de luz do próprio movimento
+  theme: caverna subterrânea
+  twist: o rastro apodrece e vira parede
+- id: rebote-solitario
+  genre: breakout
+  mechanic: rebater a bola em blocos que caem
+  theme: estúdio de gravação
+  twist: o som de cada hit é uma nota da mesma escala
+- id: enxame-vidro
+  genre: shooter
+  mechanic: atirar em enxames que se fragmentam
+  theme: estufa de vidro
+  twist: estilhaços viram munição
+- id: corda-bamba
+  genre: equilíbrio
+  mechanic: manter personagem na corda com micro-ajustes
+  theme: circo noturno
+  twist: vento muda de direção com o tempo
+- id: colheita-relampago
+  genre: arcade
+  mechanic: colher células antes que madurem demais
+  theme: fazenda em speedrun
+  twist: colher cedo vale menos mas segura
+- id: refletor
+  genre: puzzle
+  mechanic: espelhar lasers para acertar núcleos
+  theme: templo abandonado
+  twist: um espelho só reflete ao som do pulso
+- id: mergulho-livre
+  genre: descent
+  mechanic: cair o mais fundo possível desviando
+  theme: fossa oceânica
+  twist: bolhas de ar são a pontuação
+- id: pêndulo
+  genre: timing
+  mechanic: soltar o gancho no timing certo
+  theme: relógio quebrado
+  twist: a gravidade muda de lado a cada engrenagem
+- id: formigueiro
+  genre: simulação
+  mechanic: rotear fileiras de formigas até o açúcar
+  theme: quintal gigante
+  twist: formigas seguem o cheiro do último caminho traçado
+- id: dente-dourado
+  genre: roguelite
+  mechanic: salas curtas com inimigos que somam combo
+  theme: cofre antigo
+  twist: o ouro coletado aumenta o tamanho da porta de saída
+- id: marea-corta
+  genre: runner
+  mechanic: cortar ondas no ritmo
+  theme: praia de inverno
+  twist: onda dupla exige dois cortes
+- id: guarda-sol
+  genre: arcade
+  mechanic: planar desviando de chuva ácida
+  theme: tempestade urbana
+  twist: poças sobem e encurtam o voo
+- id: libelula
+  genre: flappy
+  mechanic: voar entre hastes com batidas curtas
+  theme: brejo ao amanhecer
+  twist: névoa esconde pares de hastes
+- id: relogio-espera
+  genre: puzzle
+  mechanic: congelar o tempo para trocar de lugar
+  theme: estação de trem vazia
+  twist: congelar gasta a mesma energia que mover
+- id: farol
+  genre: defense
+  mechanic: apontar o feixe que afasta criaturas
+  theme: costa tempestuosa
+  twist: o feixe revela e cega ao mesmo tempo
+- id: tambor-pressa
+  genre: rhythm
+  mechanic: acertar o tambor no pulso dos obstáculos
+  theme: bloco afro
+  twist: o pulso duplica a cada ciclo
+- id: caramelo
+  genre: snake
+  mechanic: crescer comendo doces que escorregam
+  theme: confeitaria à noite
+  twist: doce derretido deixa pista escorregadia
+- id: meia-lua
+  genre: pong
+  mechanic: rebater em um único lado circular
+  theme: pátio de skatista
+  twist: a bola ganha rotação conforme o giro
+- id: vira-pagina
+  genre: puzzle
+  mechanic: dobrar o cenário para encurtar caminho
+  theme: biblioteca molhada
+  twist: páginas dobradas viram ponte
+- id: sinal-cerrado
+  genre: stealth
+  mechanic: cruzar salas evitando o cone de luz
+  theme: serra-elétrica aposentada
+  twist: "o cone ouve: passos rápidos atraem"
+- id: fila-dupla
+  genre: gerenciamento
+  mechanic: atender duas filas com um só balcão
+  theme: padaria de bairro
+  twist: clientes trocam de fila quando impacientam
+- id: clarao-curto
+  genre: arcade
+  mechanic: piscadas de luz revelam o caminho e os perigos
+  theme: apagão
+  twist: piscar demais queima o gerador
+- id: boia-fria
+  genre: fishing
+  mechanic: fisgar peixes com tensão de linha
+  theme: doca de madrugada
+  twist: peixe grande puxa a boia para fora da tela
+- id: compasso-mudo
+  genre: rhythm
+  mechanic: tocar no silêncio entre batidas
+  theme: pratiquério
+  twist: o silêncio encurta a cada acerto
+- id: peça-solta
+  genre: tetris-like
+  mechanic: encaixar peças que escorregam
+  theme: oficina de motos
+  twist: peça oleosa desliza até bater
+- id: correio-vento
+  genre: delivery
+  mechanic: entregar cartas planando com o vento
+  theme: vila de morros
+  twist: rajadas viram atalhos e armadilhas
+- id: digito
+  genre: typing
+  mechanic: digitar a palavra que desarma o perigo
+  theme: máquina de escrever possuída
+  twist: palavras em pt-BR com acento valem o dobro
+- id: gato-estante
+  genre: plataforma
+  mechanic: pular entre estantes derrubando livros
+  theme: biblioteca à meia-noite
+  twist: livros caídos formam pilhas-ponte
+- id: fios-traçados
+  genre: connection
+  mechanic: conectar fios da mesma cor sem cruzar
+  theme: quadro elétrico antigo
+  twist: fio cruzado esquenta e estoura
+- id: fumaça-fina
+  genre: aim
+  mechanic: acertar alvos que só aparecem na fumaça
+  theme: ferro-velho
+  twist: cada tiro limpa a fumaça local
+- id: boliche-espinho
+  genre: física
+  mechanic: lançar a bola desviando de espinhos móveis
+  theme: boliche abandonado
+  twist: espinhos se movem no ritmo da música
+- id: raiz-viva
+  genre: crescimento
+  mechanic: direcionar raízes para água e luz
+  theme: muro de contenção
+  twist: raiz que passa por sombra fica mais rápida
+- id: ultimo-busao
+  genre: dodge
+  mechanic: correr atras do último ônibus desviando de gente
+  theme: terminal lotado
+  twist: o ônibus espera só enquanto você estiver visível
+- id: prato-voo
+  genre: arremesso
+  mechanic: arremessar pratos contando o quique
+  theme: jantar de gala
+  twist: prato que quica 3x vale prato novo

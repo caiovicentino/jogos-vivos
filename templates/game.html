@@ -1,0 +1,182 @@
+<!doctype html>
+<!--
+  __  __      _        __  __      _        _           
+ |  \/  |_  _| |__ _ _ |  \/  |_  _| |__ _ _| |_____ _ _ 
+ | |\/| | || | / _` | _|| |\/| | || | / _` | / -_) _ \ ' \ 
+ |_|  |_|\_,_|_\__,_|__||_|  |_|\_,_|_\__,_|_\___|___/_||_|
+  Jogos Vivos: template do jogo. O código do jogo (gerado pelo grafo)
+  entra no slot /*__GAME__*/ e fala apenas com a API JV. Sem callback hell.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0b0b0e">
+<title>__TITLE__</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230b0b0e'/><rect x='3' y='3' width='10' height='10' fill='__COLOR0__'/></svg>">
+<style>
+  :root{ --p0:__COLOR0__; --p1:__COLOR1__; --p2:__COLOR2__; --p3:__COLOR3__; --p4:__COLOR4__; }
+  html,body{margin:0;padding:0;height:100%;background:var(--p4);overflow:hidden;touch-action:none}
+  canvas{display:block;position:fixed;inset:0}
+</style>
+</head>
+<body>
+<canvas id="jv" aria-label="__TITLE__"></canvas>
+<script>
+"use strict";
+/* ============================================================
+   JV: engine mínima do template Jogos Vivos.
+   O jogo gerado usa SOMENTE esta API (contrato).
+   ============================================================ */
+const JV = (() => {
+  const cv = document.getElementById("jv");
+  const ctx = cv.getContext("2d");
+  const S = { state:"boot", t:0, score:0, best:0, shake:0 };
+  let particles = [], W = 0, H = 0, dpr = 1, last = 0, slug = "jogo";
+
+  /* --- rng determinístico por seed (mesma seed = mesmo jogo) --- */
+  const rng = (seed) => { let a = seed>>>0;
+    return () => { a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a);
+      t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; };
+  let rand = rng(0x5EED);
+
+  /* --- áudio sintetizado (zero samples, zero licença) --- */
+  let AC = null, noiseBuf = null;
+  function ac(){ AC = AC || new (window.AudioContext||window.webkitAudioContext)(); return AC; }
+  function noise(){ const a=ac(); if(noiseBuf) return noiseBuf;
+    noiseBuf=a.createBuffer(1,a.sampleRate*0.3,a.sampleRate);
+    const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    return noiseBuf; }
+  const PRESETS = {
+    hit:    {f:180, type:"square", dur:.09, vol:.5,  slide:-80},
+    pickup: {f:660, type:"square", dur:.12, vol:.4,  slide:340},
+    jump:   {f:300, type:"triangle",dur:.14, vol:.5,  slide:420},
+    shoot:  {f:520, type:"square", dur:.08, vol:.35, slide:-380},
+    explode:{f:90,  type:"sawtooth",dur:.3,  vol:.6,  slide:-60, noiseAmp:.7},
+    start:  {f:440, type:"square", dur:.2,  vol:.4,  slide:220},
+    lose:   {f:220, type:"sawtooth",dur:.5,  vol:.5,  slide:-180, noiseAmp:.3},
+  };
+  function sfx(name){ try{
+    const p = PRESETS[name]||PRESETS.hit, a = ac(), t0 = a.currentTime;
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = p.type; o.frequency.setValueAtTime(p.f, t0);
+    o.frequency.exponentialRampToValueAtTime(Math.max(30, p.f+p.slide), t0+p.dur);
+    g.gain.setValueAtTime(p.vol, t0);
+    g.gain.exponentialRampToValueAtTime(.001, t0+p.dur);
+    o.connect(g).connect(a.destination); o.start(t0); o.stop(t0+p.dur+.02);
+    if(p.noiseAmp){ const n=a.createBufferSource(); n.buffer=noise();
+      const ng=a.createGain(); ng.gain.setValueAtTime(p.noiseAmp*p.vol,t0);
+      ng.gain.exponentialRampToValueAtTime(.001,t0+p.dur);
+      n.connect(ng).connect(a.destination); n.start(t0); n.stop(t0+p.dur); }
+  }catch(e){} }
+
+  /* --- juice --- */
+  function shake(p){ S.shake = Math.max(S.shake, p); }
+  function burst(x, y, color, n=12, speed=140){
+    for(let i=0;i<n;i++){ const a=rand()*Math.PI*2, v=speed*(0.4+rand()*0.8);
+      particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.5+rand()*.3,c:color}); } }
+
+  function text(s, x, y, size, color, align="center"){
+    ctx.save(); ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline="middle";
+    ctx.font = `${size}px ${CONFIG.font? `"${CONFIG.font}", ` : ""}monospace`;
+    ctx.fillText(s, x, y); ctx.restore(); }
+
+  /* --- ciclo de vida --- */
+  function gameover(){ if(S.state!=="playing") return;
+    S.state="gameover"; sfx("lose"); shake(8);
+    S.best = Math.max(S.best, S.score);
+    try{ localStorage.setItem("jv_best_"+slug, String(S.best)); }catch(e){}
+  }
+  function play(){ if(S.state==="playing") return;
+    S.score=0; S.state="playing"; sfx("start"); G.init && G.init(); }
+
+  /* --- input --- */
+  const KEYMAP = {ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",
+    a:"left",d:"right",w:"up",s:"down"," ":"space",Enter:"enter"};
+  window.addEventListener("keydown", e=>{
+    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "].includes(e.key)) e.preventDefault();
+    const k = KEYMAP[e.key]||e.key.toLowerCase();
+    if(S.state!=="playing" && (k==="space"||k==="enter")){ play(); return; }
+    G.onKey && G.onKey(k, true);
+  });
+  window.addEventListener("keyup", e=>{ const k = KEYMAP[e.key]||e.key.toLowerCase();
+    G.onKey && G.onKey(k, false); });
+  function pt(ev, phase){ const r = cv.getBoundingClientRect();
+    const x=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+    const y=(ev.touches?ev.touches[0].clientY:ev.clientY)-r.top;
+    if(phase==="down"){ if(S.state!=="playing"){ play(); return; } }
+    G.onPointer && G.onPointer(x, y, phase); }
+  cv.addEventListener("pointerdown", e=>pt(e,"down"));
+  cv.addEventListener("pointermove", e=>pt(e,"move"));
+  cv.addEventListener("pointerup",   e=>pt(e,"up"));
+
+  function resize(){ dpr = Math.min(2, window.devicePixelRatio||1);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W*dpr; cv.height = H*dpr;
+    cv.style.width = W+"px"; cv.style.height = H+"px"; }
+  window.addEventListener("resize", resize);
+
+  /* --- loop --- */
+  function frame(ms){ const dt = Math.min(.05, (ms-last)/1000||0); last = ms;
+    if(S.state==="playing"){ G.update && G.update(dt); }
+    S.t += dt;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    if(S.shake>0){ S.shake=Math.max(0,S.shake-dt*20);
+      ctx.setTransform(dpr,0,0,dpr,(rand()*2-1)*S.shake*dpr,(rand()*2-1)*S.shake*dpr); }
+    ctx.clearRect(-20,-20,W+40,H+40);
+    if(S.state==="playing"){ G.draw && G.draw(ctx); }
+    else { shell(ctx); }
+    particles = particles.filter(p=>(p.life-=dt)>0);
+    for(const p of particles){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=300*dt;
+      ctx.globalAlpha=Math.max(0,p.life*2); ctx.fillStyle=p.c;
+      ctx.fillRect(p.x-2,p.y-2,4,4); }
+    ctx.globalAlpha=1;
+    requestAnimationFrame(frame); }
+
+  function shell(ctx){
+    ctx.fillStyle = CONFIG.palette[4]; ctx.fillRect(0,0,W,H);
+    const cx=W/2, cy=H/2, font=CONFIG.font?`"${CONFIG.font}", `:"";
+    G.drawMenu && G.drawMenu(ctx);
+    ctx.save(); ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillStyle = CONFIG.palette[0];
+    ctx.font = `28px ${font}monospace`;
+    ctx.fillText(CONFIG.name.toUpperCase(), cx, S.state==="boot"?cy-60:cy-70);
+    ctx.font = `14px ${font}monospace`; ctx.fillStyle = CONFIG.palette[3];
+    if(S.state==="gameover"){
+      ctx.fillText(CONFIG.tagline||"", cx, cy-24);
+      ctx.fillStyle = CONFIG.palette[1];
+      ctx.fillText("pontos: "+S.score+"  ·  recorde: "+S.best, cx, cy+16);
+      ctx.fillStyle = CONFIG.palette[0];
+      ctx.fillText("espaço ou toque para tentar de novo", cx, cy+60);
+    } else {
+      ctx.fillText(CONFIG.tagline||"", cx, cy-24);
+      ctx.fillStyle = CONFIG.palette[0];
+      ctx.fillText(S.best>0? "recorde: "+S.best : "espaço ou toque para jogar", cx, cy+20);
+    }
+    ctx.restore();
+  }
+
+  let CONFIG = {name:"jogos vivos", tagline:"", palette:["#e0f7fa","#80deea","#00acc1","#006064","#0b0b0e"], font:""};
+  const G = {};
+  const api = {
+    get config(){ return CONFIG; },
+    set config(v){ CONFIG = Object.assign(CONFIG, v||{}); },
+    get cfg(){ return CONFIG; },
+    game: G, sfx, shake, burst, text, rng, get rand(){return rand();},
+    gameover, get state(){return S.state;}, get score(){return S.score;},
+    set score(v){S.score=v;}, get best(){return S.best;},
+    get W(){return W;}, get H(){return H;},
+    setSlug(s){ slug=s; try{ S.best=parseInt(localStorage.getItem("jv_best_"+s))||0; }catch(e){} },
+    boot(){ resize(); rand = rng(Date.now()>>>0); requestAnimationFrame(frame); },
+  };
+  return api;
+})();
+
+/*__GAME__*/
+
+/* boot: o jogo gerado obrigatoriamente definiu JV.config e JV.game */
+JV.setSlug((JV.game.slug)||document.title);
+try{ JV.boot(); }catch(e){ document.body.textContent = "erro: "+e.message; }
+</script>
+</body>
+</html>
