@@ -1,12 +1,12 @@
 {
-  "date": "2026-08-27T04:37:15+00:00",
+  "date": "2026-08-27T20:59:43+00:00",
   "mock": true,
   "seed": {
-    "id": "refletor",
-    "genre": "puzzle",
-    "mechanic": "espelhar lasers para acertar núcleos",
-    "theme": "templo abandonado",
-    "twist": "um espelho só reflete ao som do pulso"
+    "id": "enxame-vidro",
+    "genre": "shooter",
+    "mechanic": "atirar em enxames que se fragmentam",
+    "theme": "estufa de vidro",
+    "twist": "estilhaços viram munição"
   },
   "spec": {
     "name": "sinal-vermelho",

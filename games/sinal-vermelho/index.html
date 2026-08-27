@@ -168,7 +168,7 @@ const JV = (() => {
   window.addEventListener("resize", resize);
 
   /* --- loop --- */
-  function frame(ms){ const dt = Math.min(.05, (ms-last)/1000||0); last = ms;
+  function frame(ms){ const dt = Math.max(0, Math.min(.05, (ms-last)/1000||0)); last = ms;
     if(S.state==="playing"){ G.update && G.update(dt); }
     S.t += dt;
     ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -209,16 +209,20 @@ const JV = (() => {
 
   let CONFIG = {name:"jogos vivos", tagline:"", palette:["#e0f7fa","#80deea","#00acc1","#006064","#0b0b0e"], font:""};
   const G = {};
+  function loadFont(){ if(!CONFIG.font) return;
+    const l = document.createElement("link"); l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(CONFIG.font).replace(/%20/g,"+") + "&display=swap";
+    document.head.appendChild(l); }
   const api = {
     get config(){ return CONFIG; },
     set config(v){ CONFIG = Object.assign(CONFIG, v||{}); },
     get cfg(){ return CONFIG; },
-    game: G, sfx, shake, burst, text, rng, get rand(){return rand();},
+    game: G, sfx, shake, burst, text, rng, get rand(){ return rand; },
     gameover, get state(){return S.state;}, get score(){return S.score;},
     set score(v){S.score=v;}, get best(){return S.best;},
     get W(){return W;}, get H(){return H;},
     setSlug(s){ slug=s; try{ S.best=parseInt(localStorage.getItem("jv_best_"+s))||0; }catch(e){} },
-    boot(){ resize(); rand = rng(Date.now()>>>0); requestAnimationFrame(frame); },
+    boot(){ resize(); loadFont(); rand = rng(Date.now()>>>0); requestAnimationFrame(frame); },
   };
   return api;
 })();

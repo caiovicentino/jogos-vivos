@@ -27,6 +27,13 @@
       "slug": "lama-viva",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-08-27T20:59:43+00:00",
+      "seed_id": "enxame-vidro",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }
