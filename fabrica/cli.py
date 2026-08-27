@@ -15,7 +15,7 @@ from rich.panel import Panel
 from . import graph as graph_mod
 from .llm import LLM
 from .mock import MockLLM
-from .models import GateReport
+from .models import GateReport, slugify
 from .nodes import seed
 from .template import build_html  # noqa: F401 — exposto p/ testes
 
@@ -48,10 +48,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     )
     gate = GateReport(**final["gate"])
     spec = final["spec"]
-    slug = spec["name"] if isinstance(spec, dict) else spec.name
-    from .models import slugify
-
-    slug = slugify(slug)
+    slug = slugify(spec["name"] if isinstance(spec, dict) else spec.name)
     out = Path(args.out) / slug
     out.mkdir(parents=True, exist_ok=True)
     (out / "index.html").write_text(final["code_html"], encoding="utf-8")
@@ -78,6 +75,63 @@ def cmd_run(args: argparse.Namespace) -> int:
     return 0 if gate.passed else 1
 
 
+def cmd_inject(args: argparse.Namespace) -> int:
+    """Caminho 'seja você o LLM': concept/design/code prontos, gate decide."""
+    import json
+
+    from .models import ConceptSpec, DesignDoc
+    from .nodes.gate import gate_node
+    from .template import build_html
+
+    load_dotenv()
+    spec = ConceptSpec(**json.loads(Path(args.spec).read_text(encoding="utf-8")))
+    design = json.loads(Path(args.design).read_text(encoding="utf-8"))
+    js = Path(args.code).read_text(encoding="utf-8")
+    js = js.strip()
+    if js.startswith("```"):
+        lines = js.splitlines()
+        js = "\n".join(lines[1: len(lines) - 1 if lines[-1].strip().startswith("```") else len(lines)])
+
+    state_db = seed.load_state()
+    s = seed.pick(state_db, args.seed_idx)
+    final = gate_node(
+        {
+            "code_html": build_html(js, spec),
+            "spec": spec.model_dump(),
+            "iteration": 0,
+        }
+    )
+    gate = GateReport(**final["gate"])
+    slug = slugify(spec.name)
+    out = Path(args.out) / slug
+
+    if not gate.passed:
+        console.print(f"[bold red]✗ gate recusou {slug}[/bold red]")
+        for e in gate.errors:
+            console.print(f"  [red]·[/red] [{e.rule}] {e.message}")
+        for w in gate.warnings:
+            console.print(f"  [yellow]·[/yellow] [{w.rule}] {w.message}")
+        return 1
+
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "index.html").write_text(build_html(js, spec), encoding="utf-8")
+    report = {
+        "date": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "mode": "inject",
+        "seed": s.model_dump(),
+        "spec": spec.model_dump(),
+        "design": design,
+        "gate": gate.model_dump(),
+        "iterations": final["iteration"],
+    }
+    (out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    seed.record(state_db, s, slug, True, final["iteration"])
+    console.print(f"[bold green]✓ gate passou[/bold green] → {out / 'index.html'}")
+    for w in gate.warnings:
+        console.print(f"  [yellow]·[/yellow] [{w.rule}] {w.message}")
+    return 0
+
+
 def cmd_graph(_args: argparse.Namespace) -> int:
     print(graph_mod.mermaid())
     return 0
@@ -93,6 +147,13 @@ def main(argv: list[str] | None = None) -> int:
     run.set_defaults(func=cmd_run)
     g = sub.add_parser("graph", help="imprime o grafo em mermaid")
     g.set_defaults(func=cmd_graph)
+    inj = sub.add_parser("inject", help="injeta concept/design/code prontos no gate (modo 'você é o LLM')")
+    inj.add_argument("--spec", required=True, help="JSON do ConceptSpec")
+    inj.add_argument("--design", required=True, help="JSON do DesignDoc")
+    inj.add_argument("--code", required=True, help="JS do jogo (contrato JV)")
+    inj.add_argument("--out", default="games")
+    inj.add_argument("--seed-idx", type=int, default=None)
+    inj.set_defaults(func=cmd_inject)
 
     args = p.parse_args(argv)
     return args.func(args)

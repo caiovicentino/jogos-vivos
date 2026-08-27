@@ -48,6 +48,9 @@ python -m fabrica.cli run
 
 # ver o grafo
 python -m fabrica.cli graph
+
+# modo "voce e o LLM": concept/design/code prontos passam pelo mesmo gate
+python -m fabrica.cli inject --spec spec.json --design design.json --code game.js --seed-idx 1
 ```
 
 ```bash

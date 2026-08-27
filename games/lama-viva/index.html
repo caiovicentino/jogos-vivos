@@ -1,0 +1,438 @@
+<!doctype html>
+<!--
+  __  __      _        __  __      _        _           
+ |  \/  |_  _| |__ _ _ |  \/  |_  _| |__ _ _| |_____ _ _ 
+ | |\/| | || | / _` | _|| |\/| | || | / _` | / -_) _ \ ' \ 
+ |_|  |_|\_,_|_\__,_|__||_|  |_|\_,_|_\__,_|_\___|___/_||_|
+  Jogos Vivos: template do jogo. O código do jogo (gerado pelo grafo)
+  entra no slot /* ===== GAME CODE (gerado) ===== */
+JV.config = { name: "lama-viva", tagline: "empilhe o pantano. respeite o peso.",
+  palette: ["#0d1418", "#173b2c", "#2e8b6a", "#9ff2c8", "#f4a259"], font: "VT323" };
+JV.game.slug = "lama-viva";
+
+const LARG = 64, ALT = 22, LIMITE = 1.0;
+const PESO = [0, 0, 0.7, 1.4, 2.2]; // indice = cor da paleta
+
+let bloco, torre, pend, vento, squash, ttlSquash;
+
+function novoBloco() {
+  const rng = JV.rng((Date.now() * 7919 + torre.length * 104729) >>> 0);
+  const roll = rng();
+  const ci = roll < 0.45 ? 2 : roll < 0.8 ? 3 : 4;
+  return { x: JV.W / 2, y: 46, ci, w: LARG, v: 150 + torre.length * 9, caindo: false };
+}
+
+JV.game.init = () => {
+  torre = []; pend = 0; vento = 0; squash = 0; ttlSquash = 0;
+  bloco = novoBloco();
+};
+
+function baseY() { return JV.H - 48 - torre.length * ALT; }
+
+function solta() {
+  if (!bloco || bloco.caindo) return;
+  bloco.caindo = true;
+  JV.sfx("shoot");
+}
+
+function aterrissa() {
+  const baseX = JV.W / 2;
+  const peso = PESO[bloco.ci];
+  if (Math.abs(bloco.x - baseX) > 130) {
+    JV.burst(bloco.x, baseY(), JV.config.palette[3], 18, 110);
+    JV.sfx("explode"); JV.shake(8);
+    afoga();
+    return;
+  }
+  const topo = torre[torre.length - 1];
+  const desvio = topo ? bloco.x - topo.x : 0;
+  if (topo && Math.abs(desvio) > LARG / 2 + 10) {
+    JV.burst(bloco.x, baseY(), JV.config.palette[1], 16, 100);
+    JV.sfx("explode"); JV.shake(9);
+    afoga();
+    return;
+  }
+  pend += (desvio / LARG) * peso * 0.25;
+  torre.push({ x: bloco.x, ci: bloco.ci });
+  JV.score += 1;
+  squash = 1; ttlSquash = 0.25;
+  JV.burst(bloco.x, baseY(), JV.config.palette[bloco.ci], 10, 90);
+  if (peso > 2) { JV.shake(6); JV.sfx("explode"); }
+  else if (peso < 1) { JV.sfx("pickup"); }
+  else { JV.sfx("hit"); }
+  if (torre.length % 6 === 0) vento = (JV.rand() * 2 - 1) * 3;
+  if (Math.abs(pend) >= LIMITE) { tomba(); return; }
+  bloco = novoBloco();
+}
+
+function afoga() {
+  JV.shake(10); JV.sfx("lose"); JV.gameover();
+}
+
+function tomba() {
+  for (let i = 0; i < torre.length; i++) {
+    JV.burst(torre[i].x, JV.H - 48 - (i + 1) * ALT, JV.config.palette[torre[i].ci], 7, 130);
+  }
+  torre = [];
+  JV.shake(12); JV.sfx("lose"); JV.gameover();
+}
+
+const keys = {};
+JV.game.onKey = (k, down) => {
+  keys[k] = down;
+  if (down && (k === "space" || k === "enter")) solta();
+};
+JV.game.onPointer = (x, y, fase) => {
+  if (fase === "down") { if (bloco) bloco.x = x; }
+  if (fase === "move" && bloco && !bloco.caindo) bloco.x = x;
+  if (fase === "up") solta();
+};
+
+JV.game.update = (dt) => {
+  if (!bloco) return;
+  if (!bloco.caindo) {
+    if (keys.left) bloco.x -= 300 * dt;
+    if (keys.right) bloco.x += 300 * dt;
+    bloco.x += vento * dt * 30;
+    if (bloco.x < bloco.w / 2 + 4) { bloco.x = bloco.w / 2 + 4; bloco.v = Math.abs(bloco.v); }
+    if (bloco.x > JV.W - bloco.w / 2 - 4) { bloco.x = JV.W - bloco.w / 2 - 4; bloco.v = -Math.abs(bloco.v); }
+    bloco.x += bloco.v * dt * 0.0;
+  } else {
+    bloco.y += 620 * dt;
+    if (bloco.y >= baseY()) { aterrissa(); return; }
+  }
+  if (ttlSquash > 0) { ttlSquash -= dt; squash = Math.max(0, ttlSquash / 0.25); }
+};
+
+JV.game.draw = (ctx) => {
+  ctx.fillStyle = JV.config.palette[0]; ctx.fillRect(0, 0, JV.W, JV.H);
+  ctx.fillStyle = JV.config.palette[1];
+  ctx.fillRect(JV.W / 2 - 90, JV.H - 48, 180, 48);
+  ctx.fillStyle = JV.config.palette[2];
+  ctx.fillRect(JV.W / 2 - 90, JV.H - 48, 180, 6);
+  const n = torre.length;
+  for (let i = 0; i < n; i++) {
+    const b = torre[i];
+    const off = pend * 26 * ((i + 1) / Math.max(1, n));
+    const sq = (i === n - 1) ? 1 - squash * 0.25 : 1;
+    const h = ALT * sq;
+    ctx.fillStyle = JV.config.palette[b.ci];
+    ctx.fillRect(b.x - b.w / 2, JV.H - 48 - (i + 1) * ALT + (ALT - h) * 0.5 + off * 0.2, b.w, h);
+  }
+  if (bloco) {
+    ctx.fillStyle = JV.config.palette[bloco.ci];
+    ctx.fillRect(bloco.x - bloco.w / 2, bloco.y, bloco.w, ALT);
+    ctx.fillStyle = JV.config.palette[3];
+    ctx.fillRect(bloco.x - bloco.w / 2, bloco.y + ALT - 3, bloco.w, 3);
+  }
+  JV.text("altura " + torre.length, 12, 24, 18, JV.config.palette[3], "left");
+  if (vento !== 0) {
+    const seta = vento > 0 ? "vento >>" : "<< vento";
+    JV.text(seta, JV.W - 12, 24, 14, JV.config.palette[3], "right");
+  }
+};
+/* ===== FIM GAME CODE ===== */ e fala apenas com a API JV. Sem callback hell.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0b0b0e">
+<title>lama-viva</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230b0b0e'/><rect x='3' y='3' width='10' height='10' fill='%230d1418'/></svg>">
+<style>
+  :root{ --p0:%230d1418; --p1:%23173b2c; --p2:%232e8b6a; --p3:%239ff2c8; --p4:%23f4a259; }
+  html,body{margin:0;padding:0;height:100%;background:var(--p4);overflow:hidden;touch-action:none}
+  canvas{display:block;position:fixed;inset:0}
+</style>
+</head>
+<body>
+<canvas id="jv" aria-label="lama-viva"></canvas>
+<script>
+"use strict";
+/* ============================================================
+   JV: engine mínima do template Jogos Vivos.
+   O jogo gerado usa SOMENTE esta API (contrato).
+   ============================================================ */
+const JV = (() => {
+  const cv = document.getElementById("jv");
+  const ctx = cv.getContext("2d");
+  const S = { state:"boot", t:0, score:0, best:0, shake:0 };
+  let particles = [], W = 0, H = 0, dpr = 1, last = 0, slug = "jogo";
+
+  /* --- rng determinístico por seed (mesma seed = mesmo jogo) --- */
+  const rng = (seed) => { let a = seed>>>0;
+    return () => { a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a);
+      t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; };
+  let rand = rng(0x5EED);
+
+  /* --- áudio sintetizado (zero samples, zero licença) --- */
+  let AC = null, noiseBuf = null;
+  function ac(){ AC = AC || new (window.AudioContext||window.webkitAudioContext)(); return AC; }
+  function noise(){ const a=ac(); if(noiseBuf) return noiseBuf;
+    noiseBuf=a.createBuffer(1,a.sampleRate*0.3,a.sampleRate);
+    const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    return noiseBuf; }
+  const PRESETS = {
+    hit:    {f:180, type:"square", dur:.09, vol:.5,  slide:-80},
+    pickup: {f:660, type:"square", dur:.12, vol:.4,  slide:340},
+    jump:   {f:300, type:"triangle",dur:.14, vol:.5,  slide:420},
+    shoot:  {f:520, type:"square", dur:.08, vol:.35, slide:-380},
+    explode:{f:90,  type:"sawtooth",dur:.3,  vol:.6,  slide:-60, noiseAmp:.7},
+    start:  {f:440, type:"square", dur:.2,  vol:.4,  slide:220},
+    lose:   {f:220, type:"sawtooth",dur:.5,  vol:.5,  slide:-180, noiseAmp:.3},
+  };
+  function sfx(name){ try{
+    const p = PRESETS[name]||PRESETS.hit, a = ac(), t0 = a.currentTime;
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = p.type; o.frequency.setValueAtTime(p.f, t0);
+    o.frequency.exponentialRampToValueAtTime(Math.max(30, p.f+p.slide), t0+p.dur);
+    g.gain.setValueAtTime(p.vol, t0);
+    g.gain.exponentialRampToValueAtTime(.001, t0+p.dur);
+    o.connect(g).connect(a.destination); o.start(t0); o.stop(t0+p.dur+.02);
+    if(p.noiseAmp){ const n=a.createBufferSource(); n.buffer=noise();
+      const ng=a.createGain(); ng.gain.setValueAtTime(p.noiseAmp*p.vol,t0);
+      ng.gain.exponentialRampToValueAtTime(.001,t0+p.dur);
+      n.connect(ng).connect(a.destination); n.start(t0); n.stop(t0+p.dur); }
+  }catch(e){} }
+
+  /* --- juice --- */
+  function shake(p){ S.shake = Math.max(S.shake, p); }
+  function burst(x, y, color, n=12, speed=140){
+    for(let i=0;i<n;i++){ const a=rand()*Math.PI*2, v=speed*(0.4+rand()*0.8);
+      particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.5+rand()*.3,c:color}); } }
+
+  function text(s, x, y, size, color, align="center"){
+    ctx.save(); ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline="middle";
+    ctx.font = `${size}px ${CONFIG.font? `"${CONFIG.font}", ` : ""}monospace`;
+    ctx.fillText(s, x, y); ctx.restore(); }
+
+  /* --- ciclo de vida --- */
+  function gameover(){ if(S.state!=="playing") return;
+    S.state="gameover"; sfx("lose"); shake(8);
+    S.best = Math.max(S.best, S.score);
+    try{ localStorage.setItem("jv_best_"+slug, String(S.best)); }catch(e){}
+  }
+  function play(){ if(S.state==="playing") return;
+    S.score=0; S.state="playing"; sfx("start"); G.init && G.init(); }
+
+  /* --- input --- */
+  const KEYMAP = {ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",
+    a:"left",d:"right",w:"up",s:"down"," ":"space",Enter:"enter"};
+  window.addEventListener("keydown", e=>{
+    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "].includes(e.key)) e.preventDefault();
+    const k = KEYMAP[e.key]||e.key.toLowerCase();
+    if(S.state!=="playing" && (k==="space"||k==="enter")){ play(); return; }
+    G.onKey && G.onKey(k, true);
+  });
+  window.addEventListener("keyup", e=>{ const k = KEYMAP[e.key]||e.key.toLowerCase();
+    G.onKey && G.onKey(k, false); });
+  function pt(ev, phase){ const r = cv.getBoundingClientRect();
+    const x=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+    const y=(ev.touches?ev.touches[0].clientY:ev.clientY)-r.top;
+    if(phase==="down"){ if(S.state!=="playing"){ play(); return; } }
+    G.onPointer && G.onPointer(x, y, phase); }
+  cv.addEventListener("pointerdown", e=>pt(e,"down"));
+  cv.addEventListener("pointermove", e=>pt(e,"move"));
+  cv.addEventListener("pointerup",   e=>pt(e,"up"));
+
+  function resize(){ dpr = Math.min(2, window.devicePixelRatio||1);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W*dpr; cv.height = H*dpr;
+    cv.style.width = W+"px"; cv.style.height = H+"px"; }
+  window.addEventListener("resize", resize);
+
+  /* --- loop --- */
+  function frame(ms){ const dt = Math.max(0, Math.min(.05, (ms-last)/1000||0)); last = ms;
+    if(S.state==="playing"){ G.update && G.update(dt); }
+    S.t += dt;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    if(S.shake>0){ S.shake=Math.max(0,S.shake-dt*20);
+      ctx.setTransform(dpr,0,0,dpr,(rand()*2-1)*S.shake*dpr,(rand()*2-1)*S.shake*dpr); }
+    ctx.clearRect(-20,-20,W+40,H+40);
+    if(S.state==="playing"){ G.draw && G.draw(ctx); }
+    else { shell(ctx); }
+    particles = particles.filter(p=>(p.life-=dt)>0);
+    for(const p of particles){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=300*dt;
+      ctx.globalAlpha=Math.max(0,p.life*2); ctx.fillStyle=p.c;
+      ctx.fillRect(p.x-2,p.y-2,4,4); }
+    ctx.globalAlpha=1;
+    requestAnimationFrame(frame); }
+
+  function shell(ctx){
+    ctx.fillStyle = CONFIG.palette[4]; ctx.fillRect(0,0,W,H);
+    const cx=W/2, cy=H/2, font=CONFIG.font?`"${CONFIG.font}", `:"";
+    G.drawMenu && G.drawMenu(ctx);
+    ctx.save(); ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillStyle = CONFIG.palette[0];
+    ctx.font = `28px ${font}monospace`;
+    ctx.fillText(CONFIG.name.toUpperCase(), cx, S.state==="boot"?cy-60:cy-70);
+    ctx.font = `14px ${font}monospace`; ctx.fillStyle = CONFIG.palette[3];
+    if(S.state==="gameover"){
+      ctx.fillText(CONFIG.tagline||"", cx, cy-24);
+      ctx.fillStyle = CONFIG.palette[1];
+      ctx.fillText("pontos: "+S.score+"  ·  recorde: "+S.best, cx, cy+16);
+      ctx.fillStyle = CONFIG.palette[0];
+      ctx.fillText("espaço ou toque para tentar de novo", cx, cy+60);
+    } else {
+      ctx.fillText(CONFIG.tagline||"", cx, cy-24);
+      ctx.fillStyle = CONFIG.palette[0];
+      ctx.fillText(S.best>0? "recorde: "+S.best : "espaço ou toque para jogar", cx, cy+20);
+    }
+    ctx.restore();
+  }
+
+  let CONFIG = {name:"jogos vivos", tagline:"", palette:["#e0f7fa","#80deea","#00acc1","#006064","#0b0b0e"], font:""};
+  const G = {};
+  function loadFont(){ if(!CONFIG.font) return;
+    const l = document.createElement("link"); l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(CONFIG.font).replace(/%20/g,"+") + "&display=swap";
+    document.head.appendChild(l); }
+  const api = {
+    get config(){ return CONFIG; },
+    set config(v){ CONFIG = Object.assign(CONFIG, v||{}); },
+    get cfg(){ return CONFIG; },
+    game: G, sfx, shake, burst, text, rng, get rand(){ return rand; },
+    gameover, get state(){return S.state;}, get score(){return S.score;},
+    set score(v){S.score=v;}, get best(){return S.best;},
+    get W(){return W;}, get H(){return H;},
+    setSlug(s){ slug=s; try{ S.best=parseInt(localStorage.getItem("jv_best_"+s))||0; }catch(e){} },
+    boot(){ resize(); loadFont(); rand = rng(Date.now()>>>0); requestAnimationFrame(frame); },
+  };
+  return api;
+})();
+
+/* ===== GAME CODE (gerado) ===== */
+JV.config = { name: "lama-viva", tagline: "empilhe o pantano. respeite o peso.",
+  palette: ["#0d1418", "#173b2c", "#2e8b6a", "#9ff2c8", "#f4a259"], font: "VT323" };
+JV.game.slug = "lama-viva";
+
+const LARG = 64, ALT = 22, LIMITE = 1.0;
+const PESO = [0, 0, 0.7, 1.4, 2.2]; // indice = cor da paleta
+
+let bloco, torre, pend, vento, squash, ttlSquash;
+
+function novoBloco() {
+  const rng = JV.rng((Date.now() * 7919 + torre.length * 104729) >>> 0);
+  const roll = rng();
+  const ci = roll < 0.45 ? 2 : roll < 0.8 ? 3 : 4;
+  return { x: JV.W / 2, y: 46, ci, w: LARG, v: 150 + torre.length * 9, caindo: false };
+}
+
+JV.game.init = () => {
+  torre = []; pend = 0; vento = 0; squash = 0; ttlSquash = 0;
+  bloco = novoBloco();
+};
+
+function baseY() { return JV.H - 48 - torre.length * ALT; }
+
+function solta() {
+  if (!bloco || bloco.caindo) return;
+  bloco.caindo = true;
+  JV.sfx("shoot");
+}
+
+function aterrissa() {
+  const baseX = JV.W / 2;
+  const peso = PESO[bloco.ci];
+  if (Math.abs(bloco.x - baseX) > 130) {
+    JV.burst(bloco.x, baseY(), JV.config.palette[3], 18, 110);
+    JV.sfx("explode"); JV.shake(8);
+    afoga();
+    return;
+  }
+  const topo = torre[torre.length - 1];
+  const desvio = topo ? bloco.x - topo.x : 0;
+  if (topo && Math.abs(desvio) > LARG / 2 + 10) {
+    JV.burst(bloco.x, baseY(), JV.config.palette[1], 16, 100);
+    JV.sfx("explode"); JV.shake(9);
+    afoga();
+    return;
+  }
+  pend += (desvio / LARG) * peso * 0.25;
+  torre.push({ x: bloco.x, ci: bloco.ci });
+  JV.score += 1;
+  squash = 1; ttlSquash = 0.25;
+  JV.burst(bloco.x, baseY(), JV.config.palette[bloco.ci], 10, 90);
+  if (peso > 2) { JV.shake(6); JV.sfx("explode"); }
+  else if (peso < 1) { JV.sfx("pickup"); }
+  else { JV.sfx("hit"); }
+  if (torre.length % 6 === 0) vento = (JV.rand() * 2 - 1) * 3;
+  if (Math.abs(pend) >= LIMITE) { tomba(); return; }
+  bloco = novoBloco();
+}
+
+function afoga() {
+  JV.shake(10); JV.sfx("lose"); JV.gameover();
+}
+
+function tomba() {
+  for (let i = 0; i < torre.length; i++) {
+    JV.burst(torre[i].x, JV.H - 48 - (i + 1) * ALT, JV.config.palette[torre[i].ci], 7, 130);
+  }
+  torre = [];
+  JV.shake(12); JV.sfx("lose"); JV.gameover();
+}
+
+const keys = {};
+JV.game.onKey = (k, down) => {
+  keys[k] = down;
+  if (down && (k === "space" || k === "enter")) solta();
+};
+JV.game.onPointer = (x, y, fase) => {
+  if (fase === "down") { if (bloco) bloco.x = x; }
+  if (fase === "move" && bloco && !bloco.caindo) bloco.x = x;
+  if (fase === "up") solta();
+};
+
+JV.game.update = (dt) => {
+  if (!bloco) return;
+  if (!bloco.caindo) {
+    if (keys.left) bloco.x -= 300 * dt;
+    if (keys.right) bloco.x += 300 * dt;
+    bloco.x += vento * dt * 30;
+    if (bloco.x < bloco.w / 2 + 4) { bloco.x = bloco.w / 2 + 4; bloco.v = Math.abs(bloco.v); }
+    if (bloco.x > JV.W - bloco.w / 2 - 4) { bloco.x = JV.W - bloco.w / 2 - 4; bloco.v = -Math.abs(bloco.v); }
+    bloco.x += bloco.v * dt * 0.0;
+  } else {
+    bloco.y += 620 * dt;
+    if (bloco.y >= baseY()) { aterrissa(); return; }
+  }
+  if (ttlSquash > 0) { ttlSquash -= dt; squash = Math.max(0, ttlSquash / 0.25); }
+};
+
+JV.game.draw = (ctx) => {
+  ctx.fillStyle = JV.config.palette[0]; ctx.fillRect(0, 0, JV.W, JV.H);
+  ctx.fillStyle = JV.config.palette[1];
+  ctx.fillRect(JV.W / 2 - 90, JV.H - 48, 180, 48);
+  ctx.fillStyle = JV.config.palette[2];
+  ctx.fillRect(JV.W / 2 - 90, JV.H - 48, 180, 6);
+  const n = torre.length;
+  for (let i = 0; i < n; i++) {
+    const b = torre[i];
+    const off = pend * 26 * ((i + 1) / Math.max(1, n));
+    const sq = (i === n - 1) ? 1 - squash * 0.25 : 1;
+    const h = ALT * sq;
+    ctx.fillStyle = JV.config.palette[b.ci];
+    ctx.fillRect(b.x - b.w / 2, JV.H - 48 - (i + 1) * ALT + (ALT - h) * 0.5 + off * 0.2, b.w, h);
+  }
+  if (bloco) {
+    ctx.fillStyle = JV.config.palette[bloco.ci];
+    ctx.fillRect(bloco.x - bloco.w / 2, bloco.y, bloco.w, ALT);
+    ctx.fillStyle = JV.config.palette[3];
+    ctx.fillRect(bloco.x - bloco.w / 2, bloco.y + ALT - 3, bloco.w, 3);
+  }
+  JV.text("altura " + torre.length, 12, 24, 18, JV.config.palette[3], "left");
+  if (vento !== 0) {
+    const seta = vento > 0 ? "vento >>" : "<< vento";
+    JV.text(seta, JV.W - 12, 24, 14, JV.config.palette[3], "right");
+  }
+};
+/* ===== FIM GAME CODE ===== */
+
+/* boot: o jogo gerado obrigatoriamente definiu JV.config e JV.game */
+JV.setSlug((JV.game.slug)||document.title);
+try{ JV.boot(); }catch(e){ document.body.textContent = "erro: "+e.message; }
+</script>
+</body>
+</html>

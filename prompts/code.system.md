@@ -17,6 +17,9 @@ JV.game = {
 };
 ```
 
+O campo `font` aceita qualquer família do Google Fonts (ex: "VT323", "Silkscreen",
+"Press Start 2P"); o template carrega sozinho.
+
 ## API disponível (NÃO reinvente)
 - `JV.W`, `JV.H` — tamanho lógico atual da tela (muda no resize).
 - `JV.shake(power)` — screenshake. `JV.burst(x, y, cor, n=12)` — partículas retangulares.

@@ -6,6 +6,27 @@
       "slug": "sinal-vermelho",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-08-27T12:55:14+00:00",
+      "seed_id": "torre-inversa",
+      "slug": "lama-viva",
+      "gate_passed": true,
+      "iterations": 1
+    },
+    {
+      "date": "2026-08-27T12:56:01+00:00",
+      "seed_id": "torre-inversa",
+      "slug": "lama-viva",
+      "gate_passed": true,
+      "iterations": 1
+    },
+    {
+      "date": "2026-08-27T12:56:23+00:00",
+      "seed_id": "torre-inversa",
+      "slug": "lama-viva",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }

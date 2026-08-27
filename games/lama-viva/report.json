@@ -1,0 +1,68 @@
+{
+  "date": "2026-08-27T12:56:23+00:00",
+  "mode": "inject",
+  "seed": {
+    "id": "torre-inversa",
+    "genre": "puzzle",
+    "mechanic": "empilhar blocos com física mole",
+    "theme": "pântano fosforescente",
+    "twist": "o peso do bloco depende da cor"
+  },
+  "spec": {
+    "name": "lama-viva",
+    "tagline": "empilhe o pantano. respeite o peso.",
+    "genre": "puzzle arcade",
+    "mechanic": "empilhar blocos moles: a cor define o peso, e o peso define o quanto a torre pende ao aterrissar fora do centro",
+    "controls": "setas/WASD movem o bloco, espaco solta; no toque, arrasta e solta",
+    "palette": {
+      "name": "pantano-5",
+      "colors": [
+        "#0d1418",
+        "#173b2c",
+        "#2e8b6a",
+        "#9ff2c8",
+        "#f4a259"
+      ]
+    },
+    "juice": [
+      "screenshake proporcional ao peso na aterrissagem",
+      "partículas na cor do bloco a cada impacto",
+      "squash vertical no bloco do topo",
+      "som grave para bloco pesado, agudo para leve"
+    ],
+    "first_minute": "blocos leves e médios em ritmo calmo; a torre pende pouco; aos 6 blocos entra o vento lateral",
+    "anti_slop": [
+      "nome minúsculo e específico, sem sufixo de marketing",
+      "paleta pantano-5 de 5 cores, fundo quase preto esverdeado",
+      "derrota física visível: a torre tomba em partículas, sem tela de texto"
+    ]
+  },
+  "design": {
+    "core_loop": "bloco desliza no topo da tela; jogador o posiciona e solta; ele cai, aterrissa na torre, e o desvio horizontal vezes o peso da cor inclina a torre",
+    "entities": [
+      "bloco caindo: desliza e rebate nas bordas, 3 pesos por cor",
+      "torre: pilha de blocos com pendagem acumulada",
+      "plataforma de lama: base fixa no centro"
+    ],
+    "scoring": "+1 por bloco empilhado; pesos mudam o risco, não os pontos",
+    "difficulty": "velocidade de deslize sobe 9 por bloco; a cada 6 blocos o vento lateral muda e empurra o deslize",
+    "states": [
+      "menu",
+      "jogando",
+      "game over"
+    ],
+    "juice_checklist": [
+      "JV.shake no impacto pesado",
+      "JV.burst na cor do bloco em toda aterrissagem",
+      "JV.sfx grave/agudo por peso",
+      "squash no bloco do topo por 0.25s"
+    ],
+    "failure": "pendagem chega ao limite e a torre tomba em partículas; bloco que escorrega da torre afoga na lama e encerra"
+  },
+  "gate": {
+    "passed": true,
+    "errors": [],
+    "warnings": []
+  },
+  "iterations": 1
+}
