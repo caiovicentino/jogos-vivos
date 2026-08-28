@@ -34,6 +34,13 @@
       "slug": "sinal-vermelho",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-08-28T21:21:17+00:00",
+      "seed_id": "corda-bamba",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }

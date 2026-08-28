@@ -1,12 +1,12 @@
 {
-  "date": "2026-08-27T20:59:43+00:00",
+  "date": "2026-08-28T21:21:17+00:00",
   "mock": true,
   "seed": {
-    "id": "enxame-vidro",
-    "genre": "shooter",
-    "mechanic": "atirar em enxames que se fragmentam",
-    "theme": "estufa de vidro",
-    "twist": "estilhaços viram munição"
+    "id": "corda-bamba",
+    "genre": "equilíbrio",
+    "mechanic": "manter personagem na corda com micro-ajustes",
+    "theme": "circo noturno",
+    "twist": "vento muda de direção com o tempo"
   },
   "spec": {
     "name": "sinal-vermelho",
