@@ -55,6 +55,13 @@
       "slug": "sinal-vermelho",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-08-31T17:58:51+00:00",
+      "seed_id": "mergulho-livre",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }

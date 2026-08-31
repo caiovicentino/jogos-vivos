@@ -1,12 +1,12 @@
 {
-  "date": "2026-08-30T15:18:57+00:00",
+  "date": "2026-08-31T17:58:51+00:00",
   "mock": true,
   "seed": {
-    "id": "refletor",
-    "genre": "puzzle",
-    "mechanic": "espelhar lasers para acertar núcleos",
-    "theme": "templo abandonado",
-    "twist": "um espelho só reflete ao som do pulso"
+    "id": "mergulho-livre",
+    "genre": "descent",
+    "mechanic": "cair o mais fundo possível desviando",
+    "theme": "fossa oceânica",
+    "twist": "bolhas de ar são a pontuação"
   },
   "spec": {
     "name": "sinal-vermelho",
