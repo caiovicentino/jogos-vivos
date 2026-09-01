@@ -1,12 +1,12 @@
 {
-  "date": "2026-08-31T17:58:51+00:00",
+  "date": "2026-09-01T15:27:13+00:00",
   "mock": true,
   "seed": {
-    "id": "mergulho-livre",
-    "genre": "descent",
-    "mechanic": "cair o mais fundo possível desviando",
-    "theme": "fossa oceânica",
-    "twist": "bolhas de ar são a pontuação"
+    "id": "pêndulo",
+    "genre": "timing",
+    "mechanic": "soltar o gancho no timing certo",
+    "theme": "relógio quebrado",
+    "twist": "a gravidade muda de lado a cada engrenagem"
   },
   "spec": {
     "name": "sinal-vermelho",
