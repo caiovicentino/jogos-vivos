@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-01T15:27:13+00:00",
+  "date": "2026-09-02T15:04:21+00:00",
   "mock": true,
   "seed": {
-    "id": "pêndulo",
-    "genre": "timing",
-    "mechanic": "soltar o gancho no timing certo",
-    "theme": "relógio quebrado",
-    "twist": "a gravidade muda de lado a cada engrenagem"
+    "id": "formigueiro",
+    "genre": "simulação",
+    "mechanic": "rotear fileiras de formigas até o açúcar",
+    "theme": "quintal gigante",
+    "twist": "formigas seguem o cheiro do último caminho traçado"
   },
   "spec": {
     "name": "sinal-vermelho",
