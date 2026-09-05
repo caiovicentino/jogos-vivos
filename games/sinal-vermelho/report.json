@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-04T14:55:05+00:00",
+  "date": "2026-09-05T13:50:39+00:00",
   "mock": true,
   "seed": {
-    "id": "marea-corta",
-    "genre": "runner",
-    "mechanic": "cortar ondas no ritmo",
-    "theme": "praia de inverno",
-    "twist": "onda dupla exige dois cortes"
+    "id": "guarda-sol",
+    "genre": "arcade",
+    "mechanic": "planar desviando de chuva ácida",
+    "theme": "tempestade urbana",
+    "twist": "poças sobem e encurtam o voo"
   },
   "spec": {
     "name": "sinal-vermelho",
