@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-05T13:50:39+00:00",
+  "date": "2026-09-06T14:07:50+00:00",
   "mock": true,
   "seed": {
-    "id": "guarda-sol",
-    "genre": "arcade",
-    "mechanic": "planar desviando de chuva ácida",
-    "theme": "tempestade urbana",
-    "twist": "poças sobem e encurtam o voo"
+    "id": "libelula",
+    "genre": "flappy",
+    "mechanic": "voar entre hastes com batidas curtas",
+    "theme": "brejo ao amanhecer",
+    "twist": "névoa esconde pares de hastes"
   },
   "spec": {
     "name": "sinal-vermelho",
