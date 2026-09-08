@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-07T16:25:38+00:00",
+  "date": "2026-09-08T15:03:32+00:00",
   "mock": true,
   "seed": {
-    "id": "relogio-espera",
-    "genre": "puzzle",
-    "mechanic": "congelar o tempo para trocar de lugar",
-    "theme": "estação de trem vazia",
-    "twist": "congelar gasta a mesma energia que mover"
+    "id": "farol",
+    "genre": "defense",
+    "mechanic": "apontar o feixe que afasta criaturas",
+    "theme": "costa tempestuosa",
+    "twist": "o feixe revela e cega ao mesmo tempo"
   },
   "spec": {
     "name": "sinal-vermelho",
