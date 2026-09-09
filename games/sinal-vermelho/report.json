@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-08T15:03:32+00:00",
+  "date": "2026-09-09T15:05:20+00:00",
   "mock": true,
   "seed": {
-    "id": "farol",
-    "genre": "defense",
-    "mechanic": "apontar o feixe que afasta criaturas",
-    "theme": "costa tempestuosa",
-    "twist": "o feixe revela e cega ao mesmo tempo"
+    "id": "tambor-pressa",
+    "genre": "rhythm",
+    "mechanic": "acertar o tambor no pulso dos obstáculos",
+    "theme": "bloco afro",
+    "twist": "o pulso duplica a cada ciclo"
   },
   "spec": {
     "name": "sinal-vermelho",
