@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-09T15:05:20+00:00",
+  "date": "2026-09-10T14:57:30+00:00",
   "mock": true,
   "seed": {
-    "id": "tambor-pressa",
-    "genre": "rhythm",
-    "mechanic": "acertar o tambor no pulso dos obstáculos",
-    "theme": "bloco afro",
-    "twist": "o pulso duplica a cada ciclo"
+    "id": "caramelo",
+    "genre": "snake",
+    "mechanic": "crescer comendo doces que escorregam",
+    "theme": "confeitaria à noite",
+    "twist": "doce derretido deixa pista escorregadia"
   },
   "spec": {
     "name": "sinal-vermelho",
