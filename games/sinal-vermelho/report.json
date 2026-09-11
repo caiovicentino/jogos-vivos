@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-10T14:57:30+00:00",
+  "date": "2026-09-11T14:57:44+00:00",
   "mock": true,
   "seed": {
-    "id": "caramelo",
-    "genre": "snake",
-    "mechanic": "crescer comendo doces que escorregam",
-    "theme": "confeitaria à noite",
-    "twist": "doce derretido deixa pista escorregadia"
+    "id": "meia-lua",
+    "genre": "pong",
+    "mechanic": "rebater em um único lado circular",
+    "theme": "pátio de skatista",
+    "twist": "a bola ganha rotação conforme o giro"
   },
   "spec": {
     "name": "sinal-vermelho",
