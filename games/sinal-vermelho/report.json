@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-11T14:57:44+00:00",
+  "date": "2026-09-12T14:03:13+00:00",
   "mock": true,
   "seed": {
-    "id": "meia-lua",
-    "genre": "pong",
-    "mechanic": "rebater em um único lado circular",
-    "theme": "pátio de skatista",
-    "twist": "a bola ganha rotação conforme o giro"
+    "id": "vira-pagina",
+    "genre": "puzzle",
+    "mechanic": "dobrar o cenário para encurtar caminho",
+    "theme": "biblioteca molhada",
+    "twist": "páginas dobradas viram ponte"
   },
   "spec": {
     "name": "sinal-vermelho",
