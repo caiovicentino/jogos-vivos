@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-12T14:03:13+00:00",
+  "date": "2026-09-13T14:54:13+00:00",
   "mock": true,
   "seed": {
-    "id": "vira-pagina",
-    "genre": "puzzle",
-    "mechanic": "dobrar o cenário para encurtar caminho",
-    "theme": "biblioteca molhada",
-    "twist": "páginas dobradas viram ponte"
+    "id": "sinal-cerrado",
+    "genre": "stealth",
+    "mechanic": "cruzar salas evitando o cone de luz",
+    "theme": "serra-elétrica aposentada",
+    "twist": "o cone ouve: passos rápidos atraem"
   },
   "spec": {
     "name": "sinal-vermelho",
