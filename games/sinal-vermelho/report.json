@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-13T14:54:13+00:00",
+  "date": "2026-09-14T16:56:10+00:00",
   "mock": true,
   "seed": {
-    "id": "sinal-cerrado",
-    "genre": "stealth",
-    "mechanic": "cruzar salas evitando o cone de luz",
-    "theme": "serra-elétrica aposentada",
-    "twist": "o cone ouve: passos rápidos atraem"
+    "id": "fila-dupla",
+    "genre": "gerenciamento",
+    "mechanic": "atender duas filas com um só balcão",
+    "theme": "padaria de bairro",
+    "twist": "clientes trocam de fila quando impacientam"
   },
   "spec": {
     "name": "sinal-vermelho",
