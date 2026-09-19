@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-18T14:56:19+00:00",
+  "date": "2026-09-19T14:21:02+00:00",
   "mock": true,
   "seed": {
-    "id": "peça-solta",
-    "genre": "tetris-like",
-    "mechanic": "encaixar peças que escorregam",
-    "theme": "oficina de motos",
-    "twist": "peça oleosa desliza até bater"
+    "id": "correio-vento",
+    "genre": "delivery",
+    "mechanic": "entregar cartas planando com o vento",
+    "theme": "vila de morros",
+    "twist": "rajadas viram atalhos e armadilhas"
   },
   "spec": {
     "name": "sinal-vermelho",
