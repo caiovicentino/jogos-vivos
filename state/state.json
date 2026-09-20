@@ -195,6 +195,13 @@
       "slug": "sinal-vermelho",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-09-20T14:40:51+00:00",
+      "seed_id": "digito",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }
