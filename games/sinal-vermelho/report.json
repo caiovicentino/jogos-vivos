@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-20T14:40:51+00:00",
+  "date": "2026-09-21T16:59:46+00:00",
   "mock": true,
   "seed": {
-    "id": "digito",
-    "genre": "typing",
-    "mechanic": "digitar a palavra que desarma o perigo",
-    "theme": "máquina de escrever possuída",
-    "twist": "palavras em pt-BR com acento valem o dobro"
+    "id": "gato-estante",
+    "genre": "plataforma",
+    "mechanic": "pular entre estantes derrubando livros",
+    "theme": "biblioteca à meia-noite",
+    "twist": "livros caídos formam pilhas-ponte"
   },
   "spec": {
     "name": "sinal-vermelho",
