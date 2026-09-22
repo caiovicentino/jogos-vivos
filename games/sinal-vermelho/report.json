@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-21T16:59:46+00:00",
+  "date": "2026-09-22T15:29:39+00:00",
   "mock": true,
   "seed": {
-    "id": "gato-estante",
-    "genre": "plataforma",
-    "mechanic": "pular entre estantes derrubando livros",
-    "theme": "biblioteca à meia-noite",
-    "twist": "livros caídos formam pilhas-ponte"
+    "id": "fios-traçados",
+    "genre": "connection",
+    "mechanic": "conectar fios da mesma cor sem cruzar",
+    "theme": "quadro elétrico antigo",
+    "twist": "fio cruzado esquenta e estoura"
   },
   "spec": {
     "name": "sinal-vermelho",
