@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-23T15:25:55+00:00",
+  "date": "2026-09-24T15:48:01+00:00",
   "mock": true,
   "seed": {
-    "id": "fumaça-fina",
-    "genre": "aim",
-    "mechanic": "acertar alvos que só aparecem na fumaça",
-    "theme": "ferro-velho",
-    "twist": "cada tiro limpa a fumaça local"
+    "id": "boliche-espinho",
+    "genre": "física",
+    "mechanic": "lançar a bola desviando de espinhos móveis",
+    "theme": "boliche abandonado",
+    "twist": "espinhos se movem no ritmo da música"
   },
   "spec": {
     "name": "sinal-vermelho",
