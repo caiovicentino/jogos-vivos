@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-26T14:57:32+00:00",
+  "date": "2026-09-27T15:38:18+00:00",
   "mock": true,
   "seed": {
-    "id": "ultimo-busao",
-    "genre": "dodge",
-    "mechanic": "correr atras do último ônibus desviando de gente",
-    "theme": "terminal lotado",
-    "twist": "o ônibus espera só enquanto você estiver visível"
+    "id": "prato-voo",
+    "genre": "arremesso",
+    "mechanic": "arremessar pratos contando o quique",
+    "theme": "jantar de gala",
+    "twist": "prato que quica 3x vale prato novo"
   },
   "spec": {
     "name": "sinal-vermelho",
