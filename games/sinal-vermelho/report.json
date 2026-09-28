@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-27T15:38:18+00:00",
+  "date": "2026-09-28T18:34:45+00:00",
   "mock": true,
   "seed": {
-    "id": "prato-voo",
-    "genre": "arremesso",
-    "mechanic": "arremessar pratos contando o quique",
-    "theme": "jantar de gala",
-    "twist": "prato que quica 3x vale prato novo"
+    "id": "sprint-noite",
+    "genre": "arcade",
+    "mechanic": "desviar de ondas de obstáculos que aceleram",
+    "theme": "madrugada de cidade",
+    "twist": "a cada 15s a câmera gira 90 graus"
   },
   "spec": {
     "name": "sinal-vermelho",
