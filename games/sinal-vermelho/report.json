@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-28T18:34:45+00:00",
+  "date": "2026-09-29T16:52:21+00:00",
   "mock": true,
   "seed": {
-    "id": "sprint-noite",
-    "genre": "arcade",
-    "mechanic": "desviar de ondas de obstáculos que aceleram",
-    "theme": "madrugada de cidade",
-    "twist": "a cada 15s a câmera gira 90 graus"
+    "id": "torre-inversa",
+    "genre": "puzzle",
+    "mechanic": "empilhar blocos com física mole",
+    "theme": "pântano fosforescente",
+    "twist": "o peso do bloco depende da cor"
   },
   "spec": {
     "name": "sinal-vermelho",
