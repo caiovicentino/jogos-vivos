@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-03T15:07:56+00:00",
+  "date": "2026-10-04T15:47:26+00:00",
   "mock": true,
   "seed": {
-    "id": "corda-bamba",
-    "genre": "equilíbrio",
-    "mechanic": "manter personagem na corda com micro-ajustes",
-    "theme": "circo noturno",
-    "twist": "vento muda de direção com o tempo"
+    "id": "colheita-relampago",
+    "genre": "arcade",
+    "mechanic": "colher células antes que madurem demais",
+    "theme": "fazenda em speedrun",
+    "twist": "colher cedo vale menos mas segura"
   },
   "spec": {
     "name": "sinal-vermelho",
