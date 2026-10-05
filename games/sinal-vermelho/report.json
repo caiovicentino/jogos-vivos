@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-04T15:47:26+00:00",
+  "date": "2026-10-05T19:45:54+00:00",
   "mock": true,
   "seed": {
-    "id": "colheita-relampago",
-    "genre": "arcade",
-    "mechanic": "colher células antes que madurem demais",
-    "theme": "fazenda em speedrun",
-    "twist": "colher cedo vale menos mas segura"
+    "id": "refletor",
+    "genre": "puzzle",
+    "mechanic": "espelhar lasers para acertar núcleos",
+    "theme": "templo abandonado",
+    "twist": "um espelho só reflete ao som do pulso"
   },
   "spec": {
     "name": "sinal-vermelho",
