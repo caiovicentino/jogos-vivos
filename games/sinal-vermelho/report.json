@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-09T17:25:10+00:00",
+  "date": "2026-10-10T16:12:39+00:00",
   "mock": true,
   "seed": {
-    "id": "dente-dourado",
-    "genre": "roguelite",
-    "mechanic": "salas curtas com inimigos que somam combo",
-    "theme": "cofre antigo",
-    "twist": "o ouro coletado aumenta o tamanho da porta de saída"
+    "id": "marea-corta",
+    "genre": "runner",
+    "mechanic": "cortar ondas no ritmo",
+    "theme": "praia de inverno",
+    "twist": "onda dupla exige dois cortes"
   },
   "spec": {
     "name": "sinal-vermelho",
