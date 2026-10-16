@@ -377,6 +377,13 @@
       "slug": "sinal-vermelho",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-10-16T15:21:09+00:00",
+      "seed_id": "caramelo",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }
