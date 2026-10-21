@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-20T15:37:59+00:00",
+  "date": "2026-10-21T15:55:24+00:00",
   "mock": true,
   "seed": {
-    "id": "fila-dupla",
-    "genre": "gerenciamento",
-    "mechanic": "atender duas filas com um só balcão",
-    "theme": "padaria de bairro",
-    "twist": "clientes trocam de fila quando impacientam"
+    "id": "clarao-curto",
+    "genre": "arcade",
+    "mechanic": "piscadas de luz revelam o caminho e os perigos",
+    "theme": "apagão",
+    "twist": "piscar demais queima o gerador"
   },
   "spec": {
     "name": "sinal-vermelho",
