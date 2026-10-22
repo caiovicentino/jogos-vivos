@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-21T15:55:24+00:00",
+  "date": "2026-10-22T15:51:56+00:00",
   "mock": true,
   "seed": {
-    "id": "clarao-curto",
-    "genre": "arcade",
-    "mechanic": "piscadas de luz revelam o caminho e os perigos",
-    "theme": "apagão",
-    "twist": "piscar demais queima o gerador"
+    "id": "boia-fria",
+    "genre": "fishing",
+    "mechanic": "fisgar peixes com tensão de linha",
+    "theme": "doca de madrugada",
+    "twist": "peixe grande puxa a boia para fora da tela"
   },
   "spec": {
     "name": "sinal-vermelho",
