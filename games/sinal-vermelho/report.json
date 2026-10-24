@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-23T15:43:19+00:00",
+  "date": "2026-10-24T14:27:37+00:00",
   "mock": true,
   "seed": {
-    "id": "compasso-mudo",
-    "genre": "rhythm",
-    "mechanic": "tocar no silêncio entre batidas",
-    "theme": "pratiquério",
-    "twist": "o silêncio encurta a cada acerto"
+    "id": "peça-solta",
+    "genre": "tetris-like",
+    "mechanic": "encaixar peças que escorregam",
+    "theme": "oficina de motos",
+    "twist": "peça oleosa desliza até bater"
   },
   "spec": {
     "name": "sinal-vermelho",
