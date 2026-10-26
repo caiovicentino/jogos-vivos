@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-25T14:55:56+00:00",
+  "date": "2026-10-26T17:18:23+00:00",
   "mock": true,
   "seed": {
-    "id": "correio-vento",
-    "genre": "delivery",
-    "mechanic": "entregar cartas planando com o vento",
-    "theme": "vila de morros",
-    "twist": "rajadas viram atalhos e armadilhas"
+    "id": "digito",
+    "genre": "typing",
+    "mechanic": "digitar a palavra que desarma o perigo",
+    "theme": "máquina de escrever possuída",
+    "twist": "palavras em pt-BR com acento valem o dobro"
   },
   "spec": {
     "name": "sinal-vermelho",
