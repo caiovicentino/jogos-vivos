@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-30T16:59:40+00:00",
+  "date": "2026-10-31T16:02:05+00:00",
   "mock": true,
   "seed": {
-    "id": "boliche-espinho",
-    "genre": "física",
-    "mechanic": "lançar a bola desviando de espinhos móveis",
-    "theme": "boliche abandonado",
-    "twist": "espinhos se movem no ritmo da música"
+    "id": "raiz-viva",
+    "genre": "crescimento",
+    "mechanic": "direcionar raízes para água e luz",
+    "theme": "muro de contenção",
+    "twist": "raiz que passa por sombra fica mais rápida"
   },
   "spec": {
     "name": "sinal-vermelho",
