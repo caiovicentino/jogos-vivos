@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-04T18:35:50+00:00",
+  "date": "2026-11-05T18:41:02+00:00",
   "mock": true,
   "seed": {
-    "id": "torre-inversa",
-    "genre": "puzzle",
-    "mechanic": "empilhar blocos com física mole",
-    "theme": "pântano fosforescente",
-    "twist": "o peso do bloco depende da cor"
+    "id": "eco-caverna",
+    "genre": "exploração",
+    "mechanic": "enxergar só pelo rastro de luz do próprio movimento",
+    "theme": "caverna subterrânea",
+    "twist": "o rastro apodrece e vira parede"
   },
   "spec": {
     "name": "sinal-vermelho",
