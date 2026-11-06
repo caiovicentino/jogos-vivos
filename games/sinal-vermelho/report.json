@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-05T18:41:02+00:00",
+  "date": "2026-11-06T17:54:48+00:00",
   "mock": true,
   "seed": {
-    "id": "eco-caverna",
-    "genre": "exploração",
-    "mechanic": "enxergar só pelo rastro de luz do próprio movimento",
-    "theme": "caverna subterrânea",
-    "twist": "o rastro apodrece e vira parede"
+    "id": "rebote-solitario",
+    "genre": "breakout",
+    "mechanic": "rebater a bola em blocos que caem",
+    "theme": "estúdio de gravação",
+    "twist": "o som de cada hit é uma nota da mesma escala"
   },
   "spec": {
     "name": "sinal-vermelho",
