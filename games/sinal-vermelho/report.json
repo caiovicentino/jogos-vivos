@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-06T17:54:48+00:00",
+  "date": "2026-11-07T16:48:37+00:00",
   "mock": true,
   "seed": {
-    "id": "rebote-solitario",
-    "genre": "breakout",
-    "mechanic": "rebater a bola em blocos que caem",
-    "theme": "estúdio de gravação",
-    "twist": "o som de cada hit é uma nota da mesma escala"
+    "id": "enxame-vidro",
+    "genre": "shooter",
+    "mechanic": "atirar em enxames que se fragmentam",
+    "theme": "estufa de vidro",
+    "twist": "estilhaços viram munição"
   },
   "spec": {
     "name": "sinal-vermelho",
