@@ -587,6 +587,13 @@
       "slug": "sinal-vermelho",
       "gate_passed": true,
       "iterations": 1
+    },
+    {
+      "date": "2026-11-15T17:40:16+00:00",
+      "seed_id": "marea-corta",
+      "slug": "sinal-vermelho",
+      "gate_passed": true,
+      "iterations": 1
     }
   ]
 }
