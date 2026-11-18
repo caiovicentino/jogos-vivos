@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-17T19:46:27+00:00",
+  "date": "2026-11-18T19:22:02+00:00",
   "mock": true,
   "seed": {
-    "id": "libelula",
-    "genre": "flappy",
-    "mechanic": "voar entre hastes com batidas curtas",
-    "theme": "brejo ao amanhecer",
-    "twist": "névoa esconde pares de hastes"
+    "id": "relogio-espera",
+    "genre": "puzzle",
+    "mechanic": "congelar o tempo para trocar de lugar",
+    "theme": "estação de trem vazia",
+    "twist": "congelar gasta a mesma energia que mover"
   },
   "spec": {
     "name": "sinal-vermelho",
